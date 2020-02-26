@@ -15,7 +15,7 @@ jobs:
       if: github.pull_request
       run: echo "Foo"
     - name: Foo
-      if: ! github.pull_request
+      if: not github.pull_request
       run: echo "Bar"
     - name: Run a multi-line script
       run: |
