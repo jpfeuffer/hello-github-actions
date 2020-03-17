@@ -19,5 +19,13 @@ jobs:
       run: echo "Bar"
     - name: Run a multi-line script
       run: |
+        touch foo.txt
         echo Add other actions to build,
         echo test, and deploy your project.
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: foo
+        # Directory containing files to upload
+        path: .
