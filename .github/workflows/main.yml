@@ -28,4 +28,8 @@ jobs:
           source activate test
           pip install -U setuptools
           python --version
+          python -c "from setuptools import msvc; print(msvc._msvc14_find_vc2017())"
+          python -c "from setuptools import msvc; print(msvc._msvc14_find_vcvarsall('amd64'))"
+          python -c "from setuptools import msvc; print(msvc.msvc14_get_vc_env('amd64'))"
           python -c "from setuptools import msvc; print(msvc.msvc9_query_vcvarsall(14.0, 'x64'))"
+          
