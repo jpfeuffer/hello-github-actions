@@ -5,8 +5,9 @@ jobs:
     name: Hello world action
     runs-on: windows-latest    
     steps:
+      - name: Configure x64 environment
+        run: OpenMS\.github\workflows\vsenv.bat -arch=x64 -host_arch=x64
       - run: |
-          OpenMS\.github\workflows\vsenv.bat -arch=x64 -host_arch=x64
           pip install -U setuptools
           python --version
           python -c "from setuptools import msvc; msvc.msvc9_query_vcvarsall(14.0, 'x64')"
