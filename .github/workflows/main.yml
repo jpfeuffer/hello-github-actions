@@ -36,7 +36,7 @@ jobs:
           pip install -U nose
           pip install -U numpy
           pip install -U wheel
-          conda deactivate
+          # conda deactivate
           
           python --version
           python -c "from setuptools import msvc; print(msvc._msvc14_find_vc2017())"
