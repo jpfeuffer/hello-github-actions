@@ -3,9 +3,8 @@ on: push
 jobs:
   build:
     name: Hello world action
-    runs-on: ubuntu-latest    
+    runs-on: windows-latest    
     steps:
-    - uses: actions/checkout@master
-    - uses: ./action-a
-      env:
-        MY_NAME: "Mona"
+      - run: |
+          pip install -U setuptools
+          python -c "from setuptools import msvc; msvc.msvc9_query_vcvarsall(14.0, 'x64')"
