@@ -21,7 +21,9 @@ jobs:
         run: |
           echo "::add-path::$HOME/miniconda3/bin"
           echo "::add-path::$HOME/miniconda3/Scripts"
-      - run: |
+      - name: test
+        shell: bash
+        run: |
           conda create -n test python=3.7
           source activate test
           pip install -U setuptools
