@@ -10,7 +10,20 @@ jobs:
           path: test
       - name: Configure x64 environment
         run: test\.github\workflows\vsenv.bat -arch=x64 -host_arch=x64
+      - name: Install Miniconda
+        shell: bash # uses git bash on windows
+        run: |
+            MINICONDA_FILENAME=Miniconda3-latest-Windows-x86_64.exe
+            curl -o $MINICONDA_FILENAME "https://repo.anaconda.com/miniconda/$MINICONDA_FILENAME"
+            ./Miniconda3-latest-Windows-x86_64.exe //InstallationType=JustMe //RegisterPython=0 //S //D=$HOME/miniconda3
+      - name: Setup conda paths
+        shell: bash
+        run: |
+          echo "::add-path::$HOME/miniconda3/bin"
+          echo "::add-path::$HOME/miniconda3/Scripts"
       - run: |
+          conda create -n test python=3.7
+          source activate test
           pip install -U setuptools
           python --version
           python -c "from setuptools import msvc; msvc.msvc9_query_vcvarsall(14.0, 'x64')"
