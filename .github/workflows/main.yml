@@ -7,4 +7,5 @@ jobs:
     steps:
       - run: |
           pip install -U setuptools
+          python --version
           python -c "from setuptools import msvc; msvc.msvc9_query_vcvarsall(14.0, 'x64')"
