@@ -5,8 +5,11 @@ jobs:
     name: Hello world action
     runs-on: windows-latest    
     steps:
+      - uses: actions/checkout@v2
+        with:
+          path: test
       - name: Configure x64 environment
-        run: OpenMS\.github\workflows\vsenv.bat -arch=x64 -host_arch=x64
+        run: test\.github\workflows\vsenv.bat -arch=x64 -host_arch=x64
       - run: |
           pip install -U setuptools
           python --version
