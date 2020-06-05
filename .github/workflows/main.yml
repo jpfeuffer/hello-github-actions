@@ -26,7 +26,18 @@ jobs:
         run: |
           conda create -n test python=3.7
           source activate test
+          # set current python executable
+          CURRENT_PYTHON_EXECUTABLE=$(which python)
+          ${CURRENT_PYTHON_EXECUTABLE} -m pip install --upgrade pip
+          # pip install all the stuff
           pip install -U setuptools
+          pip install -U pip
+          pip install -U autowrap
+          pip install -U nose
+          pip install -U numpy
+          pip install -U wheel
+          conda deactivate
+          
           python --version
           python -c "from setuptools import msvc; print(msvc._msvc14_find_vc2017())"
           python -c "from setuptools import msvc; print(msvc._msvc14_find_vcvarsall('amd64'))"
