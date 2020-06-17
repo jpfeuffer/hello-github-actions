@@ -26,8 +26,8 @@ jobs:
         run: |
           for py in 3.6 3.7 3.8
           do
-            conda create -n test python=$py
-            source activate test
+            conda create -n test-$py python=$py
+            source activate test-$py
             # set current python executable
             CURRENT_PYTHON_EXECUTABLE=$(which python)
             ${CURRENT_PYTHON_EXECUTABLE} -m pip install --upgrade pip
