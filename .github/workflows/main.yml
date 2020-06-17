@@ -43,4 +43,5 @@ jobs:
           python -c "from setuptools import msvc; print(msvc._msvc14_find_vcvarsall('amd64'))"
           python -c "from setuptools import msvc; print(msvc.msvc14_get_vc_env('amd64'))"
           python -c "from setuptools import msvc; print(msvc.msvc9_query_vcvarsall(14.0, 'x64'))"
-          python test/setup.py build
+          cd test
+          python setup.py build
