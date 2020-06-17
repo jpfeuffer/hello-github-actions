@@ -24,24 +24,28 @@ jobs:
       - name: test
         shell: bash
         run: |
-          conda create -n test python=3.7
-          source activate test
-          # set current python executable
-          CURRENT_PYTHON_EXECUTABLE=$(which python)
-          ${CURRENT_PYTHON_EXECUTABLE} -m pip install --upgrade pip
-          # pip install all the stuff
-          pip install -U setuptools
-          pip install -U pip
-          pip install -U autowrap
-          pip install -U nose
-          pip install -U numpy
-          pip install -U wheel
-          # conda deactivate
+          for py in 3.6 3.7 3.8
+          do
+            conda create -n test python=py
+            source activate test
+            # set current python executable
+            CURRENT_PYTHON_EXECUTABLE=$(which python)
+            ${CURRENT_PYTHON_EXECUTABLE} -m pip install --upgrade pip
+            # pip install all the stuff
+            pip install -U setuptools
+            pip install -U pip
+            pip install -U autowrap
+            pip install -U nose
+            pip install -U numpy
+            pip install -U wheel
+            conda deactivate
           
-          python --version
-          python -c "from setuptools import msvc; print(msvc._msvc14_find_vc2017())"
-          python -c "from setuptools import msvc; print(msvc._msvc14_find_vcvarsall('amd64'))"
-          python -c "from setuptools import msvc; print(msvc.msvc14_get_vc_env('amd64'))"
-          python -c "from setuptools import msvc; print(msvc.msvc9_query_vcvarsall(14.0, 'x64'))"
-          cd test
-          python setup.py build
+            ${CURRENT_PYTHON_EXECUTABLE} --version
+            ${CURRENT_PYTHON_EXECUTABLE} -c "from setuptools import msvc; print(msvc._msvc14_find_vc2017())"
+            ${CURRENT_PYTHON_EXECUTABLE} -c "from setuptools import msvc; print(msvc._msvc14_find_vcvarsall('amd64'))"
+            ${CURRENT_PYTHON_EXECUTABLE} -c "from setuptools import msvc; print(msvc.msvc14_get_vc_env('amd64'))"
+            ${CURRENT_PYTHON_EXECUTABLE} -c "from setuptools import msvc; print(msvc.msvc9_query_vcvarsall(14.0, 'x64'))"
+            pushd test
+              ${CURRENT_PYTHON_EXECUTABLE} setup.py build
+            popd
+          done
