@@ -52,6 +52,8 @@ jobs:
             done
           popd
           tree $Qt5_Dir
+          cp -R $Qt5_Dir/lib/QtCore.framework QtCore.framework
+          tree QtCore.framework
 
 
     - uses: actions/upload-artifact@v2
