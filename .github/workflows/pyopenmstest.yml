@@ -1,0 +1,64 @@
+# This is a basic workflow to help you get started with Actions
+
+name: pyopenms-wheels
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: '5.12.7'
+        host: 'mac'
+        target: 'desktop'
+        install-deps: 'true'
+        modules: 'qtsvg'
+        cached: 'false'
+
+    - name: Build
+      run: |
+          brew install tree
+          export CC=clang
+          export CXX=clang++
+          export MACOSX_DEPLOYMENT_TARGET=10.9
+          # Unfortunately, on macOS due to the inofficial way of enabling OpenMP on AppleClang, passing the following
+          # options to setup.py extra_compile_args does not work. See also https://gist.github.com/andyfaff/084005bee32aee83d6b59e843278ab3e
+          export CFLAGS="-Xpreprocessor -fopenmp $CFLAGS"
+          export CXXFLAGS="-Xpreprocessor -fopenmp $CXXFLAGS"
+
+          # create symlinks like brew https://github.com/Homebrew/homebrew-core/blob/master/Formula/qt.rb#L61
+          pushd $Qt5_Dir/include
+            for f in $Qt5_Dir/lib/*.framework/Headers
+            do
+              lnknm=$(basename "${f%/*}" ".framework")
+              ln -s $f $lnknm
+            done
+            for f in $Qt5_Dir/lib/*.framework/Versions/5/Qt*
+            do
+              install_name_tool -id $Qt5_Dir/lib/$(basename $f).framework/Versions/Current/$(basename $f) $f
+            done
+            for f in $Qt5_Dir/lib/*.framework/Versions/Current/Qt*
+            do
+              install_name_tool -id $f $f
+            done
+          popd
+          tree $Qt5_Dir
+
+
+    - uses: actions/upload-artifact@v2
+      name: Upload artifacts
+      if: always()
+      with:
+        name: ${{ runner.os }}-buildfiles
+        path: |
+          $Qt5_Dir/*
+
