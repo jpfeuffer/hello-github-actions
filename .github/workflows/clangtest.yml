@@ -11,7 +11,9 @@ jobs:
         which clang++
         clang++ --version
 
-        $(brew --prefix llvm)/bin/clang++ --version
+        $(brew --prefix llvm@15)/bin/clang++ --version || true
+
+        $(brew --prefix llvm@14)/bin/clang++ --version || true
 
         xcodebuild -find clang++
         $(xcodebuild -find clang++) --version
