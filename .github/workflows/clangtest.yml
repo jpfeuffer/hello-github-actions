@@ -1,0 +1,17 @@
+name: A workflow for my Hello World file
+on: push
+jobs:
+  build:
+    name: test different clangs
+    runs-on: macos-latest    
+    steps:
+    - name: test clang
+      shell: bash
+      run: |
+        which clang++
+        clang++ --version
+
+        $(brew --prefix llvm)/bin/clang++ --version
+
+        xcodebuild -find clang++
+        $(xcodebuild -find clang++) --version
