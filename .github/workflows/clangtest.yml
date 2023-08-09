@@ -17,3 +17,25 @@ jobs:
 
         xcodebuild -find clang++
         $(xcodebuild -find clang++) --version
+        
+  build-win:
+    name: find clang on win
+    runs-on: windows-2022
+    steps:
+    - name: find clang
+      shell: bash
+      run: |
+        which clang.exe || true 
+        clang.exe --version || true
+        
+    - name: Emulate a Visual Studio shell (Windows)
+      uses: egor-tensin/vs-shell@v2
+      with:
+        # NOTE: x64 is hardcoded. No support for 32bit
+        arch: x64
+        
+    - name: find clang again
+      shell: bash
+      run: |
+        which clang.exe || true 
+        clang.exe --version || true
